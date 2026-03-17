@@ -1,4 +1,4 @@
-name = "cinevault-worker"
+name = "m"
 main = "build/worker/shim.mjs"
 compatibility_date = "2024-01-01"
 

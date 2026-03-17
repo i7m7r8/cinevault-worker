@@ -12,6 +12,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Debug: confirm Cargo.toml exists
+      - name: List files in workspace
+        run: ls -la ${{ github.workspace }}
+
       - name: Install Rust toolchain
         run: |
           rustup set profile minimal
@@ -31,7 +35,9 @@ jobs:
         run: cargo install worker-build
 
       - name: Build Worker
-        run: worker-build --release
+        run: |
+          cd ${{ github.workspace }}
+          worker-build --release
 
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3

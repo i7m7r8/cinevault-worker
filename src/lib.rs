@@ -5,14 +5,15 @@ use serde_json::json;
 pub async fn main(req: Request, env: Env, _ctx: Context) -> Result<Response> {
     Router::new()
         .get_async("/vixsrc", |req, _ctx| async move {
-            let query = req.url()?.query_pairs();
-            let tmdb = query
+            // Parse the URL and extract the "tmdb" query parameter
+            let url = req.url()?;
+            let tmdb = url
+                .query_pairs()
                 .find(|(k, _)| k == "tmdb")
-                .map(|(_, v)| v)
-                .unwrap_or_default()
-                .to_string();
+                .map(|(_, v)| v.into_owned())
+                .unwrap_or_default();
 
-            // Replace this with your actual stream fetching logic
+            // Your actual stream fetching logic would go here
             let stream_url = format!("https://vixsrc.to/playlist/{}.m3u8?token=...", tmdb);
 
             Response::from_json(&json!({
